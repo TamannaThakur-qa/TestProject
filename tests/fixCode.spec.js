@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
-test('OrangeHRM stable login logout CI fixed', async ({ page }) => {
+test('OrangeHRM CI stable login logout', async ({ page }) => {
 
   await page.goto('https://opensource-demo.orangehrmlive.com/', {
     waitUntil: 'domcontentloaded'
@@ -15,25 +15,26 @@ test('OrangeHRM stable login logout CI fixed', async ({ page }) => {
     page.click('button[type="submit"]')
   ]);
 
-  // WAIT dashboard ready (IMPORTANT FIX)
+  // WAIT DASHBOARD READY
   await expect(page.locator('.oxd-topbar-header-breadcrumb')).toBeVisible();
 
-  // OPEN DROPDOWN (force helps WebKit)
+  // OPEN DROPDOWN (FIX FOR WEBKIT)
   const userMenu = page.locator('.oxd-userdropdown-tab');
-  await userMenu.waitFor({ state: 'visible' });
-  await userMenu.click({ force: true });
 
-  // WAIT FOR LOGOUT (CRITICAL FIX FOR WEBKIT)
+  await expect(userMenu).toBeVisible();
+  await userMenu.click({ force: true });   // 🔥 KEY FIX
+
+  // WAIT FOR MENU
   const logoutBtn = page.locator('text=Logout');
 
   await expect(logoutBtn).toBeVisible({ timeout: 10000 });
 
-  // SMALL SAFETY WAIT (ONLY ONCE, NOT 2 SEC)
-  await page.waitForTimeout(500);
+  // EXTRA SAFETY FOR WEBKIT
+  await page.waitForTimeout(300);
 
   await logoutBtn.click();
 
-  // FINAL VERIFY
+  // FINAL CHECK
   await expect(page).toHaveURL(/auth\/login/, { timeout: 15000 });
 
 });
