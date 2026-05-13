@@ -37,6 +37,6 @@ test('OrangeHRM login and logout stable', async ({ page }) => {
   await logoutBtn.click();
 
   // 8. Verify logout
-  await expect(page).toHaveURL(/login12/, { timeout: 15000 });
+  await expect(page).toHaveURL(/login/, { timeout: 15000 });
 
 });
