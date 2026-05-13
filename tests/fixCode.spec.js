@@ -35,6 +35,6 @@ test('OrangeHRM CI stable login logout', async ({ page }) => {
   await logoutBtn.click();
 
   // FINAL CHECK
-  await expect(page).toHaveURL(/auth\/login/, { timeout: 15000 });
+  await expect(page).toHaveURL(/auth\/login12/, { timeout: 15000 });
 
 });
