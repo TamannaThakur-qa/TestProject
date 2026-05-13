@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
@@ -10,10 +5,24 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+# 1. Install dependencies
+- script: npm install
+  displayName: Install dependencies
+
+# 2. Install Playwright browsers
+- script: npx playwright install --with-deps
+  displayName: Install Playwright browsers
+
+# 3. Run tests
+- script: npx playwright test
+  displayName: Run Playwright tests
+
+# 4. Publish test results (IMPORTANT)
+- task: PublishTestResults@2
+  condition: always()
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/results.xml'
+    failTaskOnFailedTests: true
+  displayName: Publish test results
