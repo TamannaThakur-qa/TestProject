@@ -23,6 +23,6 @@ steps:
   condition: always()
   inputs:
     testResultsFormat: 'JUnit'
-    testResultsFiles: '**/results.xml'
+    testResultsFiles: 'test-results/results.xml'
     failTaskOnFailedTests: true
   displayName: Publish test results
